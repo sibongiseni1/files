@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wealth Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo">💰 WealthBuilder</span>
+      <span class="tagline">Your personal money dashboard</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Summary Cards -->
+    <section class="summary-cards" id="summary-cards">
+      <div class="metric-card">
+        <div class="metric-label">Monthly savings</div>
+        <div class="metric-value" id="s-monthly">R 0</div>
+        <div class="metric-sub" id="s-rate">0% of income</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">10-year projection</div>
+        <div class="metric-value" id="s-10yr">R 0</div>
+        <div class="metric-sub">at 7% annual return</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Emergency fund goal</div>
+        <div class="metric-value" id="s-emerg">R 0</div>
+        <div class="metric-sub">3 months of expenses</div>
+      </div>
+    </section>
+
+    <!-- Tab Nav -->
+    <nav class="tabs" role="tablist">
+      <button class="tab active" onclick="switchTab('budget')" role="tab">Budget</button>
+      <button class="tab" onclick="switchTab('invest')" role="tab">Invest</button>
+      <button class="tab" onclick="switchTab('debt')" role="tab">Debt Payoff</button>
+      <button class="tab" onclick="switchTab('tips')" role="tab">Tips</button>
+    </nav>
+
+    <!-- Budget Tab -->
+    <section class="section active" id="tab-budget">
+      <div class="card">
+        <h3>Monthly income &amp; expenses</h3>
+
+        <div class="slider-row">
+          <label>Monthly income</label>
+          <input type="range" id="income" min="5000" max="150000" step="1000" value="25000" oninput="Budget.update()" />
+          <span class="val" id="v-income">R 25 000</span>
+        </div>
+        <div class="slider-row">
+          <label>Housing / rent</label>
+          <input type="range" id="housing" min="0" max="40000" step="500" value="7000" oninput="Budget.update()" />
+          <span class="val" id="v-housing">R 7 000</span>
+        </div>
+        <div class="slider-row">
+          <label>Food &amp; groceries</label>
+          <input type="range" id="food" min="0" max="20000" step="500" value="4000" oninput="Budget.update()" />
+          <span class="val" id="v-food">R 4 000</span>
+        </div>
+        <div class="slider-row">
+          <label>Transport</label>
+          <input type="range" id="transport" min="0" max="15000" step="500" value="2500" oninput="Budget.update()" />
+          <span class="val" id="v-transport">R 2 500</span>
+        </div>
+        <div class="slider-row">
+          <label>Other expenses</label>
+          <input type="range" id="other" min="0" max="30000" step="500" value="3000" oninput="Budget.update()" />
+          <span class="val" id="v-other">R 3 000</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Budget breakdown</h3>
+        <div id="budget-bars"></div>
+        <div class="result-box">
+          <div>
+            <div class="result-label">Money left to save</div>
+            <div class="result-sub" id="surplus-pct"></div>
+          </div>
+          <div class="result-value" id="surplus-val">R 8 500</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Invest Tab -->
+    <section class="section" id="tab-invest">
+      <div class="card">
+        <h3>Compound growth calculator</h3>
+
+        <div class="slider-row">
+          <label>Monthly investment</label>
+          <input type="range" id="monthly-inv" min="100" max="30000" step="100" value="2000" oninput="Invest.calc()" />
+          <span class="val" id="v-inv">R 2 000</span>
+        </div>
+        <div class="slider-row">
+          <label>Annual return</label>
+          <input type="range" id="rate" min="1" max="20" step="0.5" value="7" oninput="Invest.calc()" />
+          <span class="val" id="v-rate">7%</span>
+        </div>
+        <div class="slider-row">
+          <label>Years</label>
+          <input type="range" id="years" min="1" max="40" step="1" value="15" oninput="Invest.calc()" />
+          <span class="val" id="v-years">15 yrs</span>
+        </div>
+
+        <div class="result-box">
+          <div>
+            <div class="result-label">Future value</div>
+            <div class="result-sub" id="inv-contributed"></div>
+          </div>
+          <div class="result-value" id="inv-result">—</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Where to invest in South Africa</h3>
+        <div class="invest-option">
+          <div class="invest-title">Tax-Free Savings Account (TFSA)</div>
+          <div class="invest-desc">R36 000/yr limit. Growth and withdrawals are 100% tax-free. Best first account to open.</div>
+        </div>
+        <div class="invest-option">
+          <div class="invest-title">Retirement Annuity (RA)</div>
+          <div class="invest-desc">Contributions are tax-deductible (up to 27.5% of income). Access only from age 55.</div>
+        </div>
+        <div class="invest-option">
+          <div class="invest-title">JSE Index ETFs</div>
+          <div class="invest-desc">Low-cost funds tracking the JSE Top 40 or S&amp;P 500. Satrix, CoreShares, and 10X are popular providers.</div>
+        </div>
+        <div class="invest-option">
+          <div class="invest-title">Money market fund</div>
+          <div class="invest-desc">Low-risk, liquid. Ideal for your emergency fund. Returns ~7–9% in SA currently.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Debt Payoff Tab -->
+    <section class="section" id="tab-debt">
+      <div class="card">
+        <h3>Debt payoff calculator</h3>
+
+        <div class="slider-row">
+          <label>Total debt</label>
+          <input type="range" id="debt-total" min="1000" max="500000" step="1000" value="50000" oninput="Debt.calc()" />
+          <span class="val" id="v-debt-total">R 50 000</span>
+        </div>
+        <div class="slider-row">
+          <label>Interest rate</label>
+          <input type="range" id="debt-rate" min="1" max="30" step="0.5" value="20" oninput="Debt.calc()" />
+          <span class="val" id="v-debt-rate">20%</span>
+        </div>
+        <div class="slider-row">
+          <label>Monthly payment</label>
+          <input type="range" id="debt-payment" min="500" max="30000" step="500" value="3000" oninput="Debt.calc()" />
+          <span class="val" id="v-debt-payment">R 3 000</span>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-box">
+            <div class="result-label">Paid off in</div>
+            <div class="result-value" id="debt-months">—</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Total interest paid</div>
+            <div class="result-value" id="debt-interest">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Debt payoff strategy</h3>
+        <div class="tip"><strong>Avalanche method:</strong> Pay minimums on all debts, then throw extra money at the highest-interest debt first. Saves the most money.</div>
+        <div class="tip"><strong>Snowball method:</strong> Pay off the smallest debt first for quick wins and motivation, then roll that payment to the next debt.</div>
+        <div class="tip"><strong>Rule of thumb:</strong> Any debt above 10% interest is an emergency. Clear it before investing.</div>
+      </div>
+    </section>
+
+    <!-- Tips Tab -->
+    <section class="section" id="tab-tips">
+      <div class="card">
+        <h3>The 50/30/20 rule</h3>
+        <div class="rule-grid" id="rule-grid">
+          <div class="rule-block needs">
+            <div class="rule-pct">50%</div>
+            <div class="rule-label">Needs</div>
+            <div class="rule-desc">Housing, food, transport, utilities</div>
+          </div>
+          <div class="rule-block wants">
+            <div class="rule-pct">30%</div>
+            <div class="rule-label">Wants</div>
+            <div class="rule-desc">Dining out, entertainment, subscriptions</div>
+          </div>
+          <div class="rule-block savings">
+            <div class="rule-pct">20%</div>
+            <div class="rule-label">Savings</div>
+            <div class="rule-desc">TFSA, RA, emergency fund</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Key money habits</h3>
+        <div class="tip"><strong>Pay yourself first:</strong> Set up a debit order on payday to move savings before you can spend them.</div>
+        <div class="tip"><strong>Emergency fund first:</strong> Build 3–6 months of expenses before investing. Keeps you from selling investments in a crisis.</div>
+        <div class="tip"><strong>Max your TFSA annually:</strong> R36 000/year, completely tax-free. After 10 years this is transformative.</div>
+        <div class="tip"><strong>Avoid lifestyle creep:</strong> When you get a raise, save at least half the increase instead of spending it all.</div>
+        <div class="tip"><strong>Track every rand:</strong> People who track spending save on average 20% more than those who don't.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="budget.js"></script>
+  <script src="invest.js"></script>
+  <script src="debt.js"></script>
+  <script src="tips.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
